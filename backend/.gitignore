@@ -1,0 +1,32 @@
+#==================
+#General
+#==================
+.DS_Store
+*.log
+
+#==================
+#Python / Backend
+#==================
+backend/__pycache__/
+backend/*.py[cod]
+backend/venv/
+backend/.env
+backend/.pytest_cache/
+backend/*.sqlite3
+backend/*.db
+
+#==================
+#Frontend
+#==================
+frontend/node_modules/
+frontend/.env
+frontend/.next/         
+frontend/build/         
+frontend/dist/          
+
+# =======================
+# Editor / System Files
+# =======================
+.vscode/
+.idea/
+*.swp
