@@ -1,18 +1,15 @@
-# Python
-__pycache__/
-*.py[cod]
-venv/
-.env
+# OS and general system files
+.DS_Store
+*.log
 
-# Node
-node_modules/
-build/
-dist/
-npm-debug.log*
-yarn-error.log*
+# Node / React frontend
+frontend/node_modules/
+frontend/.env
+frontend/build/
+frontend/dist/
+frontend/.next/        
 
-# IDEs
+# Editor / system
 .vscode/
 .idea/
-*.suo
-*.sln
+*.swp
