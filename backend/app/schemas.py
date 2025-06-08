@@ -12,7 +12,7 @@ class Transaction(TransactionCreate):
     timestamp: datetime
 
     class Config: 
-        orm_mode = True
+        from_attributes = True
 
 class UserBase(BaseModel):
     email: str

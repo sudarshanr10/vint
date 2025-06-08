@@ -1,7 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
 from .database import engine, Base
-from .routes import users, transactions
+from .routes import users, transactions, auth
+
+load_dotenv()
 
 Base.metadata.create_all(bind=engine)
 
@@ -15,6 +18,7 @@ app.add_middleware(
 )
 app.include_router(users.router)
 app.include_router(transactions.router)
+app.include_router(auth.router)
 
 @app.get("/")
 def health():
