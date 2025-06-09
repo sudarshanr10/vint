@@ -7,15 +7,17 @@ function LoginPage() {
   const navigate = useNavigate();
   const handleLogin = async () => {
     try{
+        //Open google sign-in popup, when user signs in, we return a credential object
+        //Extract the OAuth credential from the object (result)
         const result = await signInWithGoogle();
         const credential = GoogleAuthProvider.credentialFromResult(result);
         if(!credential)
         {
           throw new Error("No Google Credential Returned");
         }
-
+        //Access actual Google-issued ID token, verify against Google's public keys
+        //sent to backend via HTTP POST request to /auth/google FastAPI endpoint
         const idToken = credential.idToken;
-        console.log("Google OAuth2 ID Token:", idToken)
         const res = await fetch("http://localhost:8000/auth/google", {
           method: "POST",
           headers: {
@@ -29,10 +31,10 @@ function LoginPage() {
         {
           throw new Error(data.detail || "Backend Authentication Failed");
         }
+        //Set app's JWT in browser for future authenticated API calls
         localStorage.setItem("jwt", data.access_token);
         navigate("/dashboard");
     }catch(err){
-        console.error("Login error:", err);
         alert("Google login failed. Please try again.");
     }
 };
