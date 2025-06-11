@@ -44,22 +44,22 @@ function TransactionsPage() {
           </tr>
         </thead>
         <tbody>
-          {transactions.map(tx => (
-            <tr key={tx.id}>
-              <td>{new Date(tx.timestamp).toLocaleDateString()}</td>
-              <td>{tx.category}</td>
-              <td style={{ textAlign: "right" }}>${tx.amount.toFixed(2)}</td>
-              <td>{tx.description || "-"}</td>
+          {transactions.map(transaction => (
+            <tr key={transaction.id}>
+              <td>{new Date(transaction.timestamp).toLocaleDateString()}</td>
+              <td>{transaction.category}</td>
+              <td style={{ textAlign: "right" }}>${transaction.amount.toFixed(2)}</td>
+              <td>{transaction.description || "-"}</td>
               <td>
-                <button onClick={() => navigate(`/edit/${tx.id}`)}>Edit</button>
+                <button onClick={() => navigate(`/edit/${transaction.id}`)}>Edit</button>
                 <button
                   onClick={async () => {
                     const jwt = localStorage.getItem("jwt");
-                    await fetch(`http://localhost:8000/transactions/${tx.id}`, {
+                    await fetch(`http://localhost:8000/transactions/${transaction.id}`, {
                       method: "DELETE",
                       headers: { Authorization: `Bearer ${jwt}` }
                     });
-                    setTransactions(curr => curr.filter(t => t.id !== tx.id));
+                    setTransactions(curr => curr.filter(t => t.id !== transaction.id));
                   }}
                   style={{ marginLeft: 8 }}
                 >
