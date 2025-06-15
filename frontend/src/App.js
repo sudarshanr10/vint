@@ -12,7 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/add" element={<AddTransactionPage />} />
+        <Route path="/add-transaction" element={<AddTransactionPage />} />
         <Route path="/transactions" element={<TransactionsPage />} />
         <Route path="/edit/:id" element={<EditTransactionPage />} />
       </Routes>
