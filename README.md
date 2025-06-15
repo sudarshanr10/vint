@@ -1,70 +1,123 @@
-# Getting Started with Create React App
+# vint.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern, full-stack financial tracking application with a beautiful, sleek UI. Track your spending, manage transactions, and visualize your finances with ease.
 
-## Available Scripts
+## Features
+- Google authentication for secure login
+- Dashboard with colorful, interactive spending charts
+- Add, edit, and delete transactions
+- Categorize spending and view summaries
+- Modern, responsive UI using Tailwind CSS
+- Glassmorphism and animated backgrounds for a premium feel
 
-In the project directory, you can run:
+## Tech Stack
+- **Frontend:** React, Tailwind CSS, Recharts
+- **Backend:** FastAPI (Python)
+- **Database:** PostgreSQL
+- **Authentication:** Google OAuth
 
-### `npm start`
+## Database (PostgreSQL)
+This application uses PostgreSQL as its primary database for storing user and transaction data. Make sure you have a PostgreSQL instance running and accessible to the backend.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Database Setup
+1. Install PostgreSQL if you don't have it already: https://www.postgresql.org/download/
+2. Create a new database and user for the app:
+   ```sql
+   CREATE DATABASE vint_db;
+   CREATE USER vint_user WITH PASSWORD 'yourpassword';
+   GRANT ALL PRIVILEGES ON DATABASE vint_db TO vint_user;
+   ```
+3. Add your database connection string to the backend `.env` file:
+   ```env
+   DATABASE_URL=postgresql://vint_user:yourpassword@localhost:5432/vint_db
+   ```
+4. Run migrations or let the backend initialize the schema as needed.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Getting Started
 
-### `npm test`
+### Prerequisites
+- Node.js (v16+ recommended)
+- Python 3.8+
+- PostgreSQL
+- (Optional) Yarn
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 1. Clone the Repository
+```bash
+git clone <your-repo-url>
+cd vint
+```
 
-### `npm run build`
+### 2. Setup the Backend (FastAPI)
+1. Navigate to the backend directory (if applicable):
+   ```bash
+   cd backend
+   ```
+2. Create a virtual environment and activate it:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Set up environment variables (e.g., Google OAuth credentials, JWT secret, Postgres connection):
+   - Create a `.env` file and add:
+     ```env
+     GOOGLE_CLIENT_ID=your-google-client-id
+     GOOGLE_CLIENT_SECRET=your-google-client-secret
+     JWT_SECRET_KEY=your-jwt-secret
+     DATABASE_URL=postgresql://vint_user:yourpassword@localhost:5432/vint_db
+     ```
+5. Run the backend server:
+   ```bash
+   uvicorn main:app --reload
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 3. Setup the Frontend (React)
+1. Navigate to the frontend directory:
+   ```bash
+   cd ../frontend
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+3. Set up environment variables if needed (e.g., API URL):
+   - Create a `.env` file and add:
+     ```env
+     REACT_APP_API_URL=http://localhost:8000
+     ```
+4. Start the frontend:
+   ```bash
+   npm start
+   # or
+   yarn start
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 4. Access the App
+- Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Usage
+- **Login:** Sign in with Google to access your dashboard.
+- **Dashboard:** View your spending summary and interactive charts.
+- **Transactions:** Add, edit, or delete transactions. Categorize your spending.
+- **Navigation:** Use the sleek navbar to switch between dashboard and transactions.
 
-### `npm run eject`
+## Contributing
+Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. Fork the repo
+2. Create your feature branch (`git checkout -b feature/your-feature`)
+3. Commit your changes (`git commit -am 'Add new feature'`)
+4. Push to the branch (`git push origin feature/your-feature`)
+5. Open a pull request
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## License
+[MIT](LICENSE)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+**vint.** — Track your finances beautifully. 
