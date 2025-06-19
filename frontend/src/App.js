@@ -5,6 +5,7 @@ import DashboardPage from "./pages/DashboardPage";
 import AddTransactionPage from "./pages/AddTransactionPage";
 import TransactionsPage from "./pages/TransactionsPage";
 import EditTransactionPage from "./pages/EditTransactionPage"
+import PlaidTransactionsPage from "./pages/PlaidTransactionsPage";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/add-transaction" element={<AddTransactionPage />} />
         <Route path="/transactions" element={<TransactionsPage />} />
         <Route path="/edit/:id" element={<EditTransactionPage />} />
+        <Route path="/plaid-transactions" element={<PlaidTransactionsPage />} />
       </Routes>
     </Router>
   );

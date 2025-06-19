@@ -23,7 +23,7 @@ function EditTransactionPage()
         fetch('http://localhost:8000/transactions', {
             headers: {Authorization: `Bearer ${jwt}`}
         })
-        .then(res => res.json())
+        .then(response => response.json())
         .then(list => {
             const transaction = list.find(t => t.id === +id);
             if(!transaction)

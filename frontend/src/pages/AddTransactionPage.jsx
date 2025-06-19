@@ -26,20 +26,25 @@ const handleSubmit = async(e) => {
 
   try{
     const selectedCategory = showNewCategoryInput ? newCategory : category;
-    const res = await fetch("http://localhost:8000/transactions", {
+    const response = await fetch("http://localhost:8000/transactions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${jwt}`
+        Authorization: `Bearer ${jwt}`,
       },
-      body: JSON.stringify({amount: parseFloat(amount), category: selectedCategory, description: description || undefined})
+      body: JSON.stringify({
+        amount: parseFloat(amount),
+        category: selectedCategory,
+        description: description || undefined
+      })
     });
-    const data = await res.json();
-    if(!res.ok)
+
+    const data = await response.json();
+    if(!response.ok)
     {
       throw new Error(data.detail || "Failed to add transaction");
     }
-    navigate("/dashboard");
+    navigate("/transactions");
   }catch(err){
     console.error("Error adding transaction:", err);
     setError(err.message);

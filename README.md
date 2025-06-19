@@ -120,4 +120,8 @@ Pull requests are welcome! For major changes, please open an issue first to disc
 
 ---
 
+<<<<<<< HEAD
 **vint.** — Track your finances beautifully. 
+=======
+**vint.** — Track your finances beautifully. 
+>>>>>>> 63891bd (Plaid functionality 90% done!)

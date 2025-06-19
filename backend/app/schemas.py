@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
 
+
 class TransactionCreate(BaseModel):
     amount: float
     category: str

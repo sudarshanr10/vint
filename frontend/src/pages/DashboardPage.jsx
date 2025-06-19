@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Legend } from "recharts";
 import NavBar from "../components/NavBar";
 import { CATEGORY_COLORS, getColorForCategory } from "../utils/colors";
+import PlaidLinkButton from "../components/PlaidLinkButton";
 
 // Custom Tooltip to show only hovered category
 const CustomTooltip = ({ active, payload }) => {
@@ -39,8 +40,8 @@ function DashboardPage() {
     fetch("http://localhost:8000/transactions/summary", {
       headers: { Authorization: `Bearer ${jwt}` },
     })
-      .then((res) =>
-        res.json().then((body) => (res.ok ? body : Promise.reject(body))))
+      .then((response) =>
+        response.json().then((body) => (response.ok ? body : Promise.reject(body))))
       .then((summary) => {
         const chartData = Object.entries(summary).map(([category, total]) => ({category,total,}));
         setData(chartData);
@@ -65,11 +66,17 @@ function DashboardPage() {
     />
   ));
 
+  
   return (
     <div className="min-h-screen bg-[#0a1120] pb-10 px-2 md:px-8 pt-0 m-0">
       <NavBar />
       <div className="max-w-4xl mx-auto mt-10">
         <h1 className="text-3xl font-extrabold text-white mb-8 tracking-tight drop-shadow">Your Spending This Month</h1>
+
+        {/* Add Plaid Button */}
+        <div className="mb-8">
+          <PlaidLinkButton />
+        </div>
         <div className="bg-[#192447]/70 backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-12">
           {error && (
             <div className="text-red-400 mb-4 font-semibold">{error}</div>

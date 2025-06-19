@@ -19,7 +19,7 @@ function LoginPage() {
         //Access actual Google-issued ID token, verify against Google's public keys
         //sent to backend via HTTP POST request to /auth/google FastAPI endpoint
         const idToken = credential.idToken;
-        const res = await fetch("http://localhost:8000/auth/google", {
+        const response = await fetch("http://localhost:8000/auth/google", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -27,8 +27,8 @@ function LoginPage() {
           body: JSON.stringify({ token: idToken })
         });
         
-        const data = await res.json();
-        if(!res.ok)
+        const data = await response.json();
+        if(!response.ok)
         {
           throw new Error(data.detail || "Backend Authentication Failed");
         }
