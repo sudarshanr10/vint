@@ -9,7 +9,7 @@ function AddTransactionPage() {
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState("");
   const [error, setError] = useState("");
-  const [categories, setCategories] = useState(["Food", "Groceries", "Bills", "Entertainment", "Utilities", "Transportation", "Other"]);
+  const [categories, setCategories] = useState(["Bills","Debt Payments","Entertainment","Fees","Food","Government","Health","Home","Income","Shopping","Transfers","Transportation", "Other"]);
   const [showNewCategoryInput, setShowNewCategoryInput] = useState(false);
   const [newCategory, setNewCategory] = useState("");
 

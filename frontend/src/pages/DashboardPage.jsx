@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Legend } from "recharts";
+import { BarChart, Bar, Cell, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Legend } from "recharts";
 import NavBar from "../components/NavBar";
-import { CATEGORY_COLORS, getColorForCategory } from "../utils/colors";
+import { getColorForCategory } from "../utils/colors";
 import PlaidLinkButton from "../components/PlaidLinkButton";
 
 // Custom Tooltip to show only hovered category
@@ -25,46 +25,55 @@ const CustomTooltip = ({ active, payload }) => {
   return null;
 };
 
+const fetchSummary = async (setData, setError, navigate, daysWindow) => {
+  const jwt = localStorage.getItem("jwt");
+  if (!jwt) {
+    navigate("/");
+    return;
+  }
+  let url = "http://localhost:8000/transactions/summary";
+  if (typeof daysWindow === "number") {
+    url += `?days=${daysWindow}`;
+  }
+
+
+  try {
+    const response = await fetch(url, {
+      headers: { Authorization: `Bearer ${jwt}` },
+    });
+
+    const body = await response.json();
+    if (!response.ok) throw body;
+
+    const chartData = Object.entries(body)
+      .map(([category, total]) => ({ category, total }))
+      .sort((a, b) => b.total - a.total);
+
+    setData(chartData);
+  } catch (err) {
+    console.error("Error fetching summary:", err);
+    setError(err.detail || "Failed to load summary data");
+  }
+};
+
 function DashboardPage() {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
+  const [daysWindow, setDaysWindow] = useState(30);
+  useEffect(() => {
+    fetchSummary(setData, setError, navigate, daysWindow);
+  }, [navigate, daysWindow]);
 
   useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-    if (!jwt) {
-      navigate("/");
-      return;
-    }
-
-    fetch("http://localhost:8000/transactions/summary", {
-      headers: { Authorization: `Bearer ${jwt}` },
-    })
-      .then((response) =>
-        response.json().then((body) => (response.ok ? body : Promise.reject(body))))
-      .then((summary) => {
-        const chartData = Object.entries(summary).map(([category, total]) => ({category,total,}));
-        setData(chartData);
-      })
-      .catch((err) => {
-        console.error("Error fetching summary:", err);
-        setError(err.detail || "Failed to load summary data");
-      });
-  }, [navigate]);
-
-  const renderBars = () =>
-  data.map((entry) => (
-    <Bar
-      key={entry.category}
-     dataKey="total"
-      name={entry.category}
-      data={[entry]}
-      fill={getColorForCategory(entry.category)}
-      radius={[8, 8, 0, 0]}
-      barSize={48}
-      isAnimationActive={true}
-    />
-  ));
+    const onStorageChange = (e) => {
+      if (e.key === 'vint_refresh_dashboard') {
+        fetchSummary(setData, setError, navigate, daysWindow); 
+      }
+    };
+    window.addEventListener("storage", onStorageChange);
+    return () => window.removeEventListener("storage", onStorageChange);
+  }, [navigate, daysWindow]);
 
   
   return (
@@ -82,6 +91,20 @@ function DashboardPage() {
             <div className="text-red-400 mb-4 font-semibold">{error}</div>
           )}
           <ResponsiveContainer width="100%" height={340}>
+            {/* 4️⃣ Window selector */}
+            <div className="flex items-center mb-6 space-x-2">
+              <label className="text-white font-medium">Show last:</label>
+              <select
+                className="bg-[#101a2c] text-white rounded p-1"
+                value={daysWindow}
+                onChange={e => setDaysWindow(Number(e.target.value))}
+              >
+                <option value={7}>7 Days</option>
+                <option value={30}>30 Days</option>
+                <option value={90}>90 Days</option>
+              </select>
+            </div>
+
             <BarChart
               data={data}
               margin={{ top: 32, right: 32, left: 0, bottom: 32 }}
@@ -101,12 +124,30 @@ function DashboardPage() {
               />
               <Tooltip content={<CustomTooltip />} />
               <Legend
-                wrapperStyle={{ color: "#fff", fontWeight: 700, fontSize: 16 }}
-                iconType="circle"
+                payload={data.map((entry) => ({
+                  value: entry.category,      
+                  type: "square",             
+                  color: getColorForCategory(entry.category)  
+                }))}
+                iconType="square"           
+                layout="horizontal"
                 align="center"
-                verticalAlign="top"
+                verticalAlign="bottom"
+                wrapperStyle={{ marginTop: 16, flexWrap: "wrap" }}
               />
-              {renderBars()}
+              <Bar
+                dataKey="total"
+                radius={[8, 8, 0, 0]}
+                barSize={48}
+                isAnimationActive={true}
+              >
+                {data.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={getColorForCategory(entry.category)}
+                  />
+                ))}
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         </div>

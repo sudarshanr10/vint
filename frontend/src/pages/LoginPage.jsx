@@ -1,6 +1,6 @@
 import React from "react";
-import { auth, provider, signInWithGoogle } from "../firebase";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { signInWithGoogle } from "../firebase";
+import { GoogleAuthProvider } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import Logo from "../assets/vintlogo.jpg";
 

@@ -8,7 +8,7 @@ function EditTransactionPage()
     const navigate = useNavigate()
     const [form, setForm] = useState({amount: "", category: "", description: ""});
     const [loading, setLoading] = useState(true);
-    const [categories, setCategories] = useState(["Food", "Groceries", "Bills", "Entertainment", "Utilities", "Transportation", "Other"]);
+    const [categories, setCategories] = useState(["Bills","Debt Payments","Entertainment","Fees","Food","Government","Health","Home","Income","Shopping","Transfers","Transportation", "Other"]);
     const [showNewCategoryInput, setShowNewCategoryInput] = useState(false);
     const [newCategory, setNewCategory] = useState("");
     const [error, setError] = useState("");
@@ -41,7 +41,7 @@ function EditTransactionPage()
             }
         })
         .catch(() => navigate("/transactions")).finally(() => setLoading(false));
-    }, [id, navigate]);
+    }, [id, navigate, categories]);
 
       const handleSubmit = async e => {
         e.preventDefault();
