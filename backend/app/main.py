@@ -5,7 +5,7 @@ from .database import engine, Base
 from .routes import users, transactions, auth, plaid
 load_dotenv()
 
-Base.metadata.create_all(bind=engine)
+##Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title = "Vint: Budget Tracker API")
 
