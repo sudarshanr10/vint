@@ -13,7 +13,7 @@ function PlaidLinkButton({ onSuccess }) {
             return;
         }
         const API = process.env.REACT_APP_API_BASE_URL;
-        const response = fetch(`${API}/plaid/link_token`, {
+        fetch(`${API}/plaid/link_token`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
