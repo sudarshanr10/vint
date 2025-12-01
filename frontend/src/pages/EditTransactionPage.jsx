@@ -20,9 +20,8 @@ function EditTransactionPage()
             navigate("/");
             return;
         }
-        const API = process.env.REACT_APP_API_BASE_URL;
-        fetch(`${API}/transactions`, {
-            headers: { Authorization: `Bearer ${jwt}` }
+        fetch('http://localhost:8000/transactions', {
+            headers: {Authorization: `Bearer ${jwt}`}
         })
         .then(response => response.json())
         .then(list => {
@@ -50,8 +49,7 @@ function EditTransactionPage()
         const jwt = localStorage.getItem("jwt");
         const selectedCategory = showNewCategoryInput? newCategory : form.category;
         try {
-          const API = process.env.REACT_APP_API_BASE_URL;
-          await fetch(`${API}/transactions/${id}`, {
+          await fetch(`http://localhost:8000/transactions/${id}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",

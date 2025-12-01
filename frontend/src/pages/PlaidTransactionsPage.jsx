@@ -13,8 +13,7 @@ function PlaidTransactionsPage() {
         navigate("/");
         return;
         }
-        const API = process.env.REACT_APP_API_BASE_URL;
-        fetch(`${API}/api/plaid/transactions`, {
+        fetch("http://localhost:8000/api/plaid/transactions", {
             headers: {
                 Authorization: `Bearer ${jwt}`,
             }

@@ -26,8 +26,7 @@ const handleSubmit = async(e) => {
 
   try{
     const selectedCategory = showNewCategoryInput ? newCategory : category;
-    const API = process.env.REACT_APP_API_BASE_URL;
-    const response = await fetch(`${API}/transactions`, {
+    const response = await fetch("http://localhost:8000/transactions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -36,9 +35,10 @@ const handleSubmit = async(e) => {
       body: JSON.stringify({
         amount: parseFloat(amount),
         category: selectedCategory,
-        description: description || undefined,
-      }),
+        description: description || undefined
+      })
     });
+
     const data = await response.json();
     if(!response.ok)
     {

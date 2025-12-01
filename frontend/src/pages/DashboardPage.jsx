@@ -31,12 +31,10 @@ const fetchSummary = async (setData, setError, navigate, daysWindow) => {
     navigate("/");
     return;
   }
-  const API = process.env.REACT_APP_API_BASE_URL;
-  let url = `${API}/transactions/summary`;
+  let url = "http://localhost:8000/transactions/summary";
   if (typeof daysWindow === "number") {
     url += `?days=${daysWindow}`;
   }
-
 
 
   try {

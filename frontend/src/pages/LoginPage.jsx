@@ -19,14 +19,14 @@ function LoginPage() {
         //Access actual Google-issued ID token, verify against Google's public keys
         //sent to backend via HTTP POST request to /auth/google FastAPI endpoint
         const idToken = credential.idToken;
-        const API = process.env.REACT_APP_API_BASE_URL;
-        const response = await fetch(`${API}/auth/google`, {
+        const response = await fetch("http://localhost:8000/auth/google", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({ token: idToken })
         });
+        
         const data = await response.json();
         if(!response.ok)
         {

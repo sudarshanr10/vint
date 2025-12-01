@@ -12,8 +12,7 @@ function PlaidLinkButton({ onSuccess }) {
             navigate("/");
             return;
         }
-        const API = process.env.REACT_APP_API_BASE_URL;
-        fetch(`${API}/plaid/link_token`, {
+        fetch("http://localhost:8000/plaid/link_token", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -40,8 +39,7 @@ function PlaidLinkButton({ onSuccess }) {
                     navigate("/");
                     return;
                 }
-                const API = process.env.REACT_APP_API_BASE_URL;
-                const response = await fetch(`${API}/plaid/set_access_token`, {
+                const response = await fetch("http://localhost:8000/plaid/set_access_token", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
