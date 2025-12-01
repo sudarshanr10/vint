@@ -32,6 +32,8 @@ function LoginPage() {
         {
           throw new Error(data.detail || "Backend Authentication Failed");
         }
+        //Clear any existing JWT token before setting the new one
+        localStorage.removeItem("jwt");
         //Set app's JWT in browser for future authenticated API calls
         localStorage.setItem("jwt", data.access_token);
         navigate("/dashboard");
