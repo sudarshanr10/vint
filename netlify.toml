@@ -1,17 +1,9 @@
 [build]
   base = "frontend"
   command = "npm run build"
-  publish = "frontend/build"
+  publish = "build"
 
-[build.environment]
-  CI = "false"
-
-[plugins]
-  package = "@netlify/plugin-ignore-build-step"
-
-[functions]
-  node_bundler = "esbuild"
-
-[optimize]
-  # disable secret scanning fully
   secrets_scan_enabled = false
+
+[[plugins]]
+package = "@netlify/plugin-ignore-build-step"
