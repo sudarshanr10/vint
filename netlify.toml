@@ -3,7 +3,5 @@
   command = "npm run build"
   publish = "build"
 
-  secrets_scan_enabled = false
-
-[[plugins]]
-package = "@netlify/plugin-ignore-build-step"
+[build.environment]
+  NETLIFY_SECRETS_SCAN_ENABLED = "false"
