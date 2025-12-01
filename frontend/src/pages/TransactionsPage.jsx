@@ -5,6 +5,7 @@ import { getColorForCategory } from "../utils/colors";
 import PlaidLinkButton from "../components/PlaidLinkButton";
 
 const TOGGLE_KEY = 'transactions_showAll';
+const API = process.env.REACT_APP_API_BASE_URL;   // ✅ Added
 
 function TransactionsPage() {
   const navigate = useNavigate();
@@ -27,10 +28,10 @@ function TransactionsPage() {
       }
 
       const results = await Promise.allSettled([
-        fetch("http://localhost:8000/transactions", {
+        fetch(`${API}/transactions`, {
           headers: { Authorization: `Bearer ${jwt}` },
         }),
-        fetch(`http://localhost:8000/plaid/${showDeleted ? 'all_transactions' : 'transactions'}`, {
+        fetch(`${API}/plaid/${showDeleted ? 'all_transactions' : 'transactions'}`, {
           headers: { Authorization: `Bearer ${jwt}` },
         }),
       ]);
@@ -76,7 +77,12 @@ function TransactionsPage() {
           name: t.name,
           amount: t.amount,
           date: t.date,
-          category: typeof t.category === "string" ? t.category: Array.isArray(t.category)? t.category.join(" > "): "Bank",
+          category:
+            typeof t.category === "string"
+              ? t.category
+              : Array.isArray(t.category)
+              ? t.category.join(" > ")
+              : "Bank",
           description: t.name,
           source: "Plaid",
           is_deleted: t.is_deleted || false,
@@ -87,7 +93,7 @@ function TransactionsPage() {
           return !isNaN(d);
         })
         .filter((tx) => typeof tx.amount === "number" && tx.amount > 0)
-        .filter((tx) => showDeleted || !tx.is_deleted);
+        .filter((tx) => showAll || !tx.is_deleted);
 
       setTransactions(combined);
     } catch (e) {
@@ -97,6 +103,7 @@ function TransactionsPage() {
       setLoading(false);
     }
   }, [navigate]);
+
   useEffect(() => {
     fetchTransactions(showAll);
   }, [fetchTransactions, showAll]);
@@ -116,8 +123,8 @@ function TransactionsPage() {
     const jwt = localStorage.getItem("jwt");
     const url =
       transaction.source === "Manual"
-        ? `http://localhost:8000/transactions/${transaction.id}`
-        : `http://localhost:8000/plaid/delete_transaction/${transaction.id}`;
+        ? `${API}/transactions/${transaction.id}`
+        : `${API}/plaid/delete_transaction/${transaction.id}`;
     
     try {
       const response = await fetch(url, {
@@ -150,7 +157,7 @@ function TransactionsPage() {
     
     const jwt = localStorage.getItem("jwt");
     try {
-      const response = await fetch(`http://localhost:8000/plaid/restore_transaction/${transaction.id}`, {
+      const response = await fetch(`${API}/plaid/restore_transaction/${transaction.id}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${jwt}`,
@@ -159,7 +166,7 @@ function TransactionsPage() {
 
       if (response.ok) {
         await fetchTransactions(showAll);
-          localStorage.setItem("vint_refresh_dashboard", Date.now().toString());
+        localStorage.setItem("vint_refresh_dashboard", Date.now().toString());
       } else {
         console.error("Failed to restore transaction");
       }
@@ -171,7 +178,7 @@ function TransactionsPage() {
   const handleRestoreAll = async () => {
     const jwt = localStorage.getItem("jwt");
     try {
-      const response = await fetch("http://localhost:8000/plaid/restore_all_transactions", {
+      const response = await fetch(`${API}/plaid/restore_all_transactions`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${jwt}`,
@@ -181,7 +188,6 @@ function TransactionsPage() {
       if (response.ok) {
         await fetchTransactions(showAll);
         localStorage.setItem("vint_refresh_dashboard", Date.now().toString());
-
       } else {
         console.error("Failed to restore all transactions");
       }
@@ -218,8 +224,7 @@ function TransactionsPage() {
               </button>
               <span className="text-white text-sm font-medium">Show All</span>
             </div>
-            
-            {/* Restore All Button - only show when showing all and there are deleted transactions */}
+
             {showAll && deletedTransactions.length > 0 && (
               <button
                 onClick={handleRestoreAll}
@@ -237,12 +242,12 @@ function TransactionsPage() {
             </button>
           </div>
         </div>
-        
+
         <div className="bg-[#192447]/70 backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-12">
           <div className="mb-6">
             <PlaidLinkButton onSuccess={() => fetchTransactions(showAll)} />
           </div>
-          
+
           {loading ? (
             <p className="text-gray-400">Loading transactions…</p>
           ) : error ? (
